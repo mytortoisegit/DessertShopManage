@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Material Management</title>
+</head>
+<body>
+<h1>Material Management</h1>
+
+<form th:action="@{/templates/materials}" th:object="${material}" method="post">
+    <input type="hidden" th:field="*{id}" />
+    <label>Name:</label>
+    <input type="text" th:field="*{name}" />
+    <label>Price:</label>
+    <input type="text" th:field="*{price}" />
+    <label>Quantity:</label>
+    <input type="text" th:field="*{quantity}" />
+    <button type="submit">Add Material</button>
+</form>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Action</th>
+    </tr>
+    <tr th:each="material : ${materials}">
+        <td th:text="${material.id}"></td>
+        <td th:text="${material.name}"></td>
+        <td th:text="${material.price}"></td>
+        <td th:text="${material.quantity}"></td>
+        <td>
+            <a th:href="@{'/materials/edit/' + ${material.id}}">Edit</a> |
+            <a th:href="@{'/materials/delete/' + ${material.id}}">Delete</a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

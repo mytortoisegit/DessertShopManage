@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Management</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/static/css/bootstrap.min.css}">
+    <script rel="stylesheet" th:src="@{/static/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<h1>User Management</h1>
+<!-- 引入本地的 Vue.js 文件 -->
+<script src="/static/vue.min.js"></script>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Action</th>
+    </tr>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.userName}"></td>
+        <td th:text="${user.email}"></td>
+        <td>
+            <a th:href="@{'/users/edit/' + ${user.id}}">Edit</a> |
+            <a th:href="@{'/users/delete/' + ${user.id}}">Delete</a>
+        </td>
+    </tr>
+</table>
+
+<a href="/users/add">新增用户信息</a>
+</body>
+</html>
