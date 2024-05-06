@@ -8,13 +8,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 @Data
-@TableName("t_user")
-public class UserDTO {
 
-    @TableField("id")
+public class UserDTO  extends BaseDTO{
     private Integer id;
-    @TableField("user_name")
-    private String userName;
+
+    private String username;
     private String email;
     private String password;
 

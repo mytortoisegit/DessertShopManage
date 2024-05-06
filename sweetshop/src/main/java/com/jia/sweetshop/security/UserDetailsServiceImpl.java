@@ -1,15 +1,19 @@
 package com.jia.sweetshop.security;
 
-import com.jia.sweetshop.mapper.UserMapper;
-import com.jia.sweetshop.model.converter.UserConverter;
-import com.jia.sweetshop.model.dto.UserDTO;
+import com.jia.sweetshop.mappers.SysMenuMapper;
+import com.jia.sweetshop.mappers.SysUserMapper;
+import com.jia.sweetshop.mappers.UserMapper;
+import com.jia.sweetshop.model.bean.SysUser;
+import com.jia.sweetshop.model.domain.LoginUser;
 import com.jia.sweetshop.model.po.UserPO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * 提供一个实现了 UserDetailsService 接口的类，
@@ -20,21 +24,24 @@ import org.springframework.stereotype.Service;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserMapper userRepository;
+    private SysUserMapper sysUserMapper;
+
+
+    @Autowired
+    private SysMenuMapper sysMenuMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // 查询用户信息
+        SysUser sysUser = sysUserMapper.findByUsername(username);
 
-        UserPO userPO = userRepository.findByUsername(username);
-        UserDTO userDTO = UserConverter.poToDto(userPO);
-        if (userPO == null) {
-            throw new UsernameNotFoundException("User not found with username: " + username);
+        if (Objects.isNull(sysUser)) {
+            System.out.println("用户名不正确");
+            throw new UsernameNotFoundException("用户名不正确: " + username);
         }
+        // 查询用户菜单权限信息
+        List<String> perms = sysMenuMapper.selectPermsByUserId(sysUser.getId());
 
-        return User.builder()
-                .username(userDTO.getUserName())
-                .password(userDTO.getPassword())
-                .roles(userDTO.getRole().toArray(new String[0]))
-                .build();
+        return new LoginUser(sysUser,perms);
     }
 }

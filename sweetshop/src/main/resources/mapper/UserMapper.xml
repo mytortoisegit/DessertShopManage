@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.jia.sweetshop.mapper.UserMapper">
+<mapper namespace="com.jia.sweetshop.mappers.UserMapper">
 
 
     <!-- 根据用户名查询用户信息 -->
+    <select id="selectUserPage" resultType="com.jia.sweetshop.model.po.UserPO">
+        SELECT * FROM t_user t
+         <where>
+             <if test="dto.userName!=null and dto.userName!='' ">
+                 AND t.user_name = #{dto.userName}
+             </if>
+             <if test="dto.email!=null and dto.email!='' ">
+                 AND t.email = #{email}
+             </if>
+         </where>
+    </select>
+
+    <!-- 根据用户名查询用户信息 d登录 -->
     <select id="findByUsername" resultType="com.jia.sweetshop.model.po.UserPO">
-        SELECT * FROM t_user WHERE id = #{id}
+        SELECT * FROM t_user WHERE user_name = #{username}
     </select>
 
     <!-- 查询所有用户 -->

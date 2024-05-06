@@ -1,5 +1,7 @@
 package com.jia.sweetshop.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.jia.sweetshop.model.dto.UserDTO;
 import com.jia.sweetshop.model.po.UserPO;
 import com.jia.sweetshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @Controller
 @RequestMapping("/users")
@@ -17,9 +18,12 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public String listUsers(Model model) {
-        List<UserPO> userPOS = userService.list();
-        model.addAttribute("users", userPOS);
+//    @ResponseBody
+    public String listUsers(Model model, UserDTO dto) {
+        IPage<UserPO> page = userService.getUserListWithPagination(dto);
+        System.out.println(page.getTotal());
+        model.addAttribute("users", page.getRecords());
+//        return JSONObject.toJSONString(page);
         return "user/list";
     }
 
@@ -31,6 +35,7 @@ public class UserController {
 
     @PostMapping("/add")
     public String addUser(@RequestBody UserPO userPO) {
+        System.out.println(userPO);
         userService.save(userPO);
         return "redirect:/users";
     }

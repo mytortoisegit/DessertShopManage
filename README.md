@@ -135,6 +135,70 @@
 
 
 
+###  项目说明
+springboot基础 配置项目
+使用 v2.6.13 版本
+引入了
+web  
+redis
+security
+mybatis-plus
+fastjson
+JWT 依赖
+lombok
+test
+devtools
+
+
+管理系统权限说明
+使用 RBAC 权限模型  基于角色的权限控制
+基础sql 路径
+org/jia/springbase/config/sql/basesql.sql
+
+使用了security 加JWT鉴权
+
+前后端分离机构可使用 前端鉴权，后端只做认证
+
+项目中包含一些已经生成的基础包结构以及代码
+
+已经实现了登录 认证 与鉴权 代码
+LoginController为 登录验证方法
+
+认证流程
+UsernamePasswordAuthenticationFilter  封装Authentication 提供用户名密码
+|
+调用认证方法
+|
+ProviderManager
+|
+|
+DaoAuthenticationProvider
+|
+|
+InMemoryUserDetailManager      到内存中获取认证信息 我们需要到数据库查询，所以
+通过实现UserDetailsService接口，重写loadUserByUsername方法，查询用户信息以及权限信息，
+返回UserDetails对象时，通过自定义一个LoginUser对象继承UserDetails对象 封装用户信息以及权限信息。
+
+
+在登录业务实现类中，使用UsernamePasswordAuthenticationToken将用户登录的账户密码传入，
+交给AuthenticationManager 对象对用户名密码信息与从数据库查询到封装的UserDetails对象做*认证比较*
+认证没通过，则提示登录失败
+认证通过从Authentication对象中获取用户信息，使用userId 通过JWT工具生成 token信息返回，
+同时可以将用户信息存入缓存中，方便下次使用，用户再次访问时必须携带token信息，
+定义JWT认证拦截器JwtAuthenticationTokenFilter继承OncePerRequestFilter拦截器，获取用户请求头中token信息，
+解析token验证是否过期以及其他签名信息，全部验证成功后将用户信息以及权限信息封装到UsernamePasswordAuthenticationToken对象中
+设置到SecurityContextHolder上下文中提供使用
+
+
+鉴权流程
+当用户认证成功时，用户权限信息已经被设置到SecurityContextHolder上下文中，当开启方法权限验证时，方法上添加 @PreAuthorize注解
+Security会根据方法上的注解到当前用户权限信息中做比对，相同则放行
+
+当前项目未实现 用户注册 在用户注册时需要使用PasswordEncoder对用户密码进行加密处理。
+
+
+
+
 
 
 

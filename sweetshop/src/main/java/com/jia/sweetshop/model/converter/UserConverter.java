@@ -13,7 +13,7 @@ public class UserConverter {
         }
         UserDTO userDTO = new UserDTO();
         userDTO.setId(userPO.getId());
-        userDTO.setUserName(userPO.getUserName());
+        userDTO.setUsername(userPO.getUserName());
         return userDTO;
     }
 
@@ -35,7 +35,7 @@ public class UserConverter {
         }
         UserDTO userDTO = new UserDTO();
         // 可以根据需要进行其他属性的映射
-        userDTO.setUserName(userVO.getUserName());
+        userDTO.setUsername(userVO.getUserName());
         return userDTO;
     }
 }
