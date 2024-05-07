@@ -18,6 +18,13 @@ public class ApiResponse<T> {
 
     public ApiResponse() {
     }
+    public ApiResponse(int code) {
+        this.code = code;
+    }
+    public ApiResponse(int code, String message) {
+        this.code = code;
+        this.msg = message;
+    }
 
     public ApiResponse(int code, String message, T data) {
         this.code = code;

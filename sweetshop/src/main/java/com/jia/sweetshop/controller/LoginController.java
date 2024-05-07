@@ -5,10 +5,7 @@ import com.jia.sweetshop.model.dto.UserDTO;
 import com.jia.sweetshop.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
@@ -18,20 +15,47 @@ import java.util.HashMap;
  */
 
 @RestController
-@RequestMapping("api/v1/element/user")
+@RequestMapping("/api")
 public class LoginController {
 
     @Autowired
     private LoginService loginService;
 
-
-    @PostMapping("login")
+    /**
+     * 用户登录
+     * @param user
+     * @return
+     */
+    @PostMapping("/user/login")
     public ApiResponse<HashMap<String, String>> login(@RequestBody UserDTO user) {
         System.out.println(user);
         return loginService.login(user);
     }
 
-    @PostMapping("/test")
+
+    /**
+     * 查询用户信息
+     * @return
+     */
+    @GetMapping("user/info")
+    public ApiResponse<HashMap<String, String>> info() {
+        return loginService.info();
+    }
+
+
+    /**
+     * 退出登录
+     * @return
+     */
+    @PostMapping("user/logout")
+    public ApiResponse<HashMap<String, String>> logout() {
+        return loginService.logout();
+    }
+
+
+
+
+    @PostMapping("test")
     // Security提供权限校验方式
 //    @PreAuthorize("hasAuthority('system:user:manage')")
     // 自定义权限校验方式

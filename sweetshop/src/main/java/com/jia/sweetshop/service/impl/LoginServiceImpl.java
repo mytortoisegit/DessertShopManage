@@ -2,6 +2,7 @@ package com.jia.sweetshop.service.impl;
 
 import com.jia.sweetshop.config.jwt.utils.JWTUtil;
 import com.jia.sweetshop.config.redis.utils.RedisCache;
+import com.jia.sweetshop.model.bean.SysUser;
 import com.jia.sweetshop.model.domain.ApiResponse;
 import com.jia.sweetshop.model.domain.LoginUser;
 import com.jia.sweetshop.model.dto.UserDTO;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -48,7 +50,27 @@ public class LoginServiceImpl implements LoginService {
         HashMap<String, String> res = new HashMap<>();
         res.put("token", jwtToken);
         return new  ApiResponse(200,"登录成功",res);
+    }
 
+    @Override
+    public ApiResponse<HashMap<String, String>> info() {
+        // 获取SecurityContextHolder中用户信息
+        LoginUser principal =(LoginUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SysUser sysUser = principal.getSysUser();
+        HashMap<String, Object> res = new HashMap<>();
+        res.put("username", sysUser.getUsername());
+        res.put("avatar", sysUser.getAvatar());
+        res.put("roles", principal.getPermissions());
+        return new  ApiResponse(200,"登录成功",res);
+    }
 
+    @Override
+    public ApiResponse<HashMap<String, String>> logout() {
+        // 获取SecurityContextHolder中用户信息
+        LoginUser principal =(LoginUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SysUser sysUser = principal.getSysUser();
+        Long id = sysUser.getId();
+        redisCache.delCacheObject("login:" + id);
+        return new  ApiResponse(200,"退出成功","");
     }
 }

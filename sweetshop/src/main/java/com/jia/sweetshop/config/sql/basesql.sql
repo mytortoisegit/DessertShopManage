@@ -54,7 +54,7 @@ VALUES (2, 'user2', 'password456', 'User Two', 'user2@example.com', '9876543210'
 
 -- 插入用户数据示例3
 INSERT INTO sys_user (id, username, password, nickname, email, phone, status, gender, avatar, user_type, del_flag, create_by, create_time, update_by, update_time)
-VALUES (3, 'admin', 'admin123', 'Admin', 'admin@example.com', '5551234567', '0', '0', 'avatar_admin.jpg', '0', '0', '1', NOW(), '1', NOW());
+VALUES (3, 'admin', '229ecef7cbc769e05169393b63f141ee7691fae0bd5dddfbdc3a43228842b61954924e1b58c7f367', 'Admin', 'admin@example.com', '5551234567', '0', '0', 'avatar_admin.jpg', '0', '0', '1', NOW(), '1', NOW());
 
 -- 插入用户数据示例4
 INSERT INTO sys_user (id, username, password, nickname, email, phone, status, gender, avatar, user_type, del_flag, create_by, create_time, update_by, update_time)

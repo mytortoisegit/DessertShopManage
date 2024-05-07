@@ -27,6 +27,6 @@
     </sql>
     <!-- 根据用户名查询用户信息 d登录 -->
     <select id="findByUsername" resultType="sysUser">
-        SELECT * FROM t_user WHERE user_name = #{username}
+        SELECT * FROM sys_user WHERE username = #{username}
     </select>
 </mapper>
