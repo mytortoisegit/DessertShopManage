@@ -3,6 +3,8 @@ package com.jia.sweetshop.model.domain;
 import lombok.Data;
 import lombok.Getter;
 
+import javax.xml.ws.Response;
+
 /*
 *  定义统一响应类
  */
@@ -31,6 +33,15 @@ public class ApiResponse<T> {
         this.msg = message;
         this.data = data;
     }
+
+
+
+
+    // 返回失败的静态方法
+    public static <T> ApiResponse<T> fail(int code, String message) {
+        return new ApiResponse<>(code, message, null);
+    }
+
 
     public static <T> ApiResponse<T> success(T data) {
         return new ApiResponse<>(200, "success", data);

@@ -144,7 +144,8 @@
                 <version>${spring-boot.version}</version>
                 <configuration>
                     <mainClass>com.jia.sweetshop.SweetshopApplication</mainClass>
-                    <skip>true</skip>
+<!--                    开发时使用打包时要关闭-->
+                  <!--  <skip>true</skip>-->
                 </configuration>
                 <executions>
                     <execution>

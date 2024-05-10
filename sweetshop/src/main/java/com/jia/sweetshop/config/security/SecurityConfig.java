@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -55,6 +56,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        // 放行静态资源
+        web.ignoring().antMatchers("/static/**", "/images/**", "/js/**", "/css/**");
+    }
+
     /**
      * 授权
      * 定义了针对HTTP请求的安全规则。
@@ -74,6 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 //对登录接口 .anonymous() 允许匿名访问
                 .antMatchers("/api/user/login").anonymous()
+                .antMatchers("/api/user/logout").anonymous()
                 // 对首页接口登录不登录都可以访问
                 .antMatchers("/api/home").permitAll()
                 .antMatchers("/index").permitAll()
