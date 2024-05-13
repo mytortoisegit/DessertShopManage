@@ -8,6 +8,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 
+/**
+ * 文件上传
+ */
 @RestController
 @RequestMapping("api/upload")
 public class UploadController {

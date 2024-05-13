@@ -11,6 +11,9 @@ public class SweetshopApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(SweetshopApplication.class, args);
+        printStartupMessage();
     }
-
+    private static void printStartupMessage() {
+        System.out.println("Application started successfully!  http://localhost:8080");
+    }
 }
